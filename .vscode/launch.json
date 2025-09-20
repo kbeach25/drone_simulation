@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Drone Simulator",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/drone_simulator",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Drone Simulator",
+            "args": []
+        }
+    ]
+}
