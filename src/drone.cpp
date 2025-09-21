@@ -10,11 +10,11 @@ Drone::Drone() : position{0,0,0}, velocity{0,0,0}, acceleration{0,0,0}, mass(0.1
 
 // Inputs: percentage of total rpm, rotor index
 void Drone::calculateThrust(int percent, int rotor){
-    // Formula: thrust = ct * p * n^2 * D^4
-    // ct = 0.10 (standard), p=1.225 (sea level), n = rpm / 60, D = diameter (5.25in for this drone, 0.133m)
-    // 7310 rpm max for drone
+    // The drone hovers at about 30% total thrust
+    // Thus, max thrust per rotor = 9.81 * mass / 4 / 0.3
+
     if (rotor >= 0 && rotor < 4) {
-        rotorThrust[rotor] = 0.20 * 1.225 * std::pow((percent* 12000)/ (100* 60.0f), 2) * std::pow(0.133f, 4);
+        rotorThrust[rotor] = ((percent * 9.81 * mass) / 400) / 0.3;
         std::cout << rotorThrust[rotor] << std::endl;
     }
 }

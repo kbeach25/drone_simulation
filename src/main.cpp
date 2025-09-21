@@ -13,10 +13,10 @@ int main() {
    // drone.setRotorThrust(2, 2.4525f);
    // drone.setRotorThrust(3, 2.4525f);
 
-    drone.calculateThrust(31, 0);
-    drone.calculateThrust(31, 1);
-    drone.calculateThrust(31, 2);
-    drone.calculateThrust(31, 3);
+    drone.calculateThrust(0, 0);
+    drone.calculateThrust(0, 1);
+    drone.calculateThrust(0, 2);
+    drone.calculateThrust(0, 3);
 
 
     for (int i = 0; i < 100; ++i) {
