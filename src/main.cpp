@@ -7,16 +7,18 @@ int main() {
     Drone drone;
     Vector3 gravity = {0.0f, -9.81f*drone.getMass(), 0.0f};
 
-    // Set rotor thrust for each (N), will change when real-time control is integrated
-   // drone.setRotorThrust(0, 2.4525f);
-   /// drone.setRotorThrust(1, 2.4525f);
-   // drone.setRotorThrust(2, 2.4525f);
-   // drone.setRotorThrust(3, 2.4525f);
 
-    drone.calculateThrust(0, 0);
-    drone.calculateThrust(0, 1);
-    drone.calculateThrust(0, 2);
-    drone.calculateThrust(0, 3);
+    // Thrust % range is 0 to 100, 50 makes it hover
+    // Individual thrust calculations must be kept individual for steering control 
+    // Rotors 0 and 1 are in the front, 2 and 3 are the back
+    // Rotors 0 and 3 spin clockwise, 1 and 2 counterclockwise 
+    drone.calculateThrust(50, 0);
+    drone.calculateThrust(50, 1);
+    drone.calculateThrust(50, 2);
+    drone.calculateThrust(50, 3);
+
+    // Apply tilt in degrees, X is left and right, Z is forwards and backwards
+    drone.applyTilt(10, 10);
 
 
     for (int i = 0; i < 100; ++i) {

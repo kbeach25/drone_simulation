@@ -8,13 +8,13 @@ Drone::Drone() : position{0,0,0}, velocity{0,0,0}, acceleration{0,0,0}, mass(0.1
     for (int i =0; i < 4; i++) rotorThrust[i] = 0.0f;
 }
 
-// Inputs: percentage of total rpm, rotor index
+// Inputs: percentage of rotor thrust, rotor index
 void Drone::calculateThrust(int percent, int rotor){
-    // The drone hovers at about 30% total thrust
-    // Thus, max thrust per rotor = 9.81 * mass / 4 / 0.3
+    // The drone hovers at about 50% total thrust
+    // Thus, max thrust per rotor = 9.81 * mass / 4 / 0.5
 
     if (rotor >= 0 && rotor < 4) {
-        rotorThrust[rotor] = ((percent * 9.81 * mass) / 400) / 0.3;
+        rotorThrust[rotor] = ((percent * 9.81 * mass) / 400) / 0.5;
         std::cout << rotorThrust[rotor] << std::endl;
     }
 }
@@ -25,16 +25,34 @@ void Drone::applyForce(const Vector3& force) {
     acceleration.z += force.z / mass;
 }
 
+// Convert tilt to radians
+void Drone::applyTilt(float degreesX, float degreesZ){
+    tiltX = degreesX * M_PI / 180.0;
+    tiltZ = degreesZ * M_PI / 180.0;
+}
+
+
+
+
 void Drone::update(float dt) {
 
     // Combine thrust from each of the rotors for total force
     float totalThrust = 0.0f;
+
+    // Find total thrust for drone
     for (int i = 0; i < 4; i++) {
         totalThrust += rotorThrust[i];
     }
 
+
+    // Split thrust into x, y, and z
+    float thrustX = totalThrust * std::sin(tiltX); // Left and right 
+    float thrustY = totalThrust * std::cos(tiltX) * std::cos(tiltZ); // Up and down
+    float thrustZ = totalThrust * std::sin(tiltZ); // Forwards and backwards
+
+
     // Apply force from 4 rotors to drone
-    applyForce({0.0f, totalThrust, 0.0f});
+    applyForce({thrustX, thrustY, thrustZ});
 
     velocity.x += acceleration.x * dt;
     velocity.y += acceleration.y * dt;

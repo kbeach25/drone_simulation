@@ -16,8 +16,11 @@ public:
 
     // 4 rotors, 2 blades per rotor
     
-    // Find thrust as a function of % of RPM (7310 rpm per rotor hovers for 0.116kg drone, 30% of total rpm range)
+    // Thrust is calculated per rotor, 50% total thrust upwards makes the drone hover 
     void calculateThrust(int percent, int rotor);
+
+    // xy plane movement functions
+    void applyTilt(float degreesY, float degreesZ);
 
     // Need mass to be public
     float getMass() const { return mass; }
@@ -31,6 +34,10 @@ private:
 
     // Rotor variables
     float rotorThrust[4];
+
+    // Drone angle variables
+    float tiltX; // Left and right tilt, - is left, + is right
+    float tiltZ; // Forwards and backwards tilt, + is forwards (front of drone tilting down), - is backwards
 
 
 };
