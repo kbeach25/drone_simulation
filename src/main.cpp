@@ -12,16 +12,16 @@ int main() {
     // Individual thrust calculations must be kept individual for steering control 
     // Rotors 0 and 1 are in the front, 2 and 3 are the back
     // Rotors 0 and 3 spin clockwise, 1 and 2 counterclockwise 
-    drone.calculateThrust(50, 0);
-    drone.calculateThrust(50, 1);
-    drone.calculateThrust(50, 2);
-    drone.calculateThrust(50, 3);
+    drone.calculateThrust(100, 0);
+    drone.calculateThrust(100, 1);
+    drone.calculateThrust(100, 2);
+    drone.calculateThrust(100, 3);
 
     // Apply tilt in degrees, X is left and right, Z is forwards and backwards
-    drone.applyTilt(10, 10);
+    drone.applyTilt(0, 0);
 
-
-    for (int i = 0; i < 100; ++i) {
+    // 2 second simulation
+    for (int i = 0; i < 125; ++i) {
         // Gravity is applied each frame
         drone.applyForce(gravity);
 

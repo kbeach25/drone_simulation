@@ -4,7 +4,12 @@
 
 // Initialize drone and rotors
 // Drone mass: 0.116kg
-Drone::Drone() : position{0,0,0}, velocity{0,0,0}, acceleration{0,0,0}, mass(0.116f) {
+Drone::Drone() : 
+                position{0,0,0}, velocity{0,0,0}, acceleration{0,0,0}, mass(0.116f),
+                tiltX(0.0f), tiltZ(0.0f), targetTiltX(0.0f), targetTiltZ(0.0f), tiltSpeed(1.0f) 
+                
+                
+                {
     for (int i =0; i < 4; i++) rotorThrust[i] = 0.0f;
 }
 
@@ -27,12 +32,9 @@ void Drone::applyForce(const Vector3& force) {
 
 // Convert tilt to radians
 void Drone::applyTilt(float degreesX, float degreesZ){
-    tiltX = degreesX * M_PI / 180.0;
-    tiltZ = degreesZ * M_PI / 180.0;
+    targetTiltX= degreesX * M_PI / 180.0;
+    targetTiltZ= degreesZ * M_PI / 180.0;
 }
-
-
-
 
 void Drone::update(float dt) {
 
@@ -63,6 +65,26 @@ void Drone::update(float dt) {
     position.z += velocity.z * dt;
 
     acceleration = {0, 0, 0};  // Reset for next frame
+
+    // Control the rate of change of the drone's tilt
+    auto smoothTilt = [](float currentTilt, float targetTilt, float speed, float dt) {
+        float deltaTilt = targetTilt - currentTilt;
+        std::cout << currentTilt << std::endl;
+
+        if (std::abs(deltaTilt) < 0.001f) return targetTilt;
+        return currentTilt + std::clamp(deltaTilt, -speed * dt, speed*dt);
+        
+    
+    };
+
+    tiltX = smoothTilt(tiltX, targetTiltX, tiltSpeed, dt);
+    tiltZ = smoothTilt(tiltZ, targetTiltZ, tiltSpeed, dt);
+
+    // Set floor for environment (very subject to change)
+    if (position.y < 0.0f) {
+        position.y = 0.0f;
+        velocity.y = 0.0f;
+    }
 }
 
 Vector3 Drone::getPosition() const {

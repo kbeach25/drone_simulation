@@ -36,8 +36,14 @@ private:
     float rotorThrust[4];
 
     // Drone angle variables
-    float tiltX; // Left and right tilt, - is left, + is right
+    // Real time tilt variables
+    float tiltX; // Left and right tilt, - is left, + is right 
     float tiltZ; // Forwards and backwards tilt, + is forwards (front of drone tilting down), - is backwards
+
+    // Target tilt variables
+    float targetTiltX; 
+    float targetTiltZ;
+    float tiltSpeed;
 
 
 };
